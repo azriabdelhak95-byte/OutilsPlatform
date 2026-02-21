@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OutilsPlatform - Mes Transactions</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 50px; }
+        .table-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .status-badge { font-size: 0.85rem; padding: 6px 12px; border-radius: 50px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand" th:href="@{/utilisateurs/principal}">🛠️ OutilsPlatform</a>
+            <a th:href="@{/utilisateurs/principal}" class="btn btn-outline-light btn-sm">Accueil</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="table-container">
+            <h2 class="fw-bold text-secondary mb-4">📜 Historique de mes transactions</h2>
+
+            <div th:if="${#lists.isEmpty(transactions)}" class="alert alert-info text-center">
+                Vous n'avez effectué aucune transaction pour le moment.
+            </div>
+
+            <div class="table-responsive" th:if="${!#lists.isEmpty(transactions)}">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Outil</th>
+                            <th>Date Début</th>
+                            <th>Date Fin</th>
+                            <th>Type</th>
+                            <th class="text-center">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="transaction : ${transactions}">
+                            <td class="fw-bold" th:text="${transaction.outil?.nom}">Nom de l'outil</td>
+                            
+                            <td th:text="${#temporals.format(transaction.dateDebut, 'dd/MM/yyyy')}">01/01/2026</td>
+                            <td th:text="${#temporals.format(transaction.dateFin, 'dd/MM/yyyy')}">05/01/2026</td>
+                            
+                            <td>
+                                <span class="text-uppercase small fw-bold" th:text="${transaction.typeTransaction}">PRET</span>
+                            </td>
+                            
+                            <td class="text-center">
+                                <span th:if="${transaction.dateFin.isBefore(#temporals.createNow())}" 
+                                      class="status-badge bg-danger-subtle text-danger border border-danger">
+                                    Terminée
+                                </span>
+                                <span th:if="${transaction.dateFin.isAfter(#temporals.createNow())}" 
+                                      class="status-badge bg-success-subtle text-success border border-success">
+                                    En cours
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4">
+                <a th:href="@{/utilisateurs/principal}" class="btn btn-secondary">← Retour au menu</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

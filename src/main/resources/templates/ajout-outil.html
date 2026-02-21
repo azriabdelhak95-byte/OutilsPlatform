@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un Outil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; }
+        .form-card {
+            max-width: 700px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .header-icon { font-size: 2.5rem; color: #0d6efd; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-card">
+        <div class="text-center mb-4">
+            <div class="header-icon">🛠️</div>
+            <h2 class="fw-bold">Ajouter un Outil</h2>
+            <p class="text-muted">Partagez votre matériel avec la communauté</p>
+        </div>
+
+        <form th:action="@{/outils/ajouter}" th:object="${outil}" method="post">
+            
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Nom de l'outil</label>
+                <input type="text" th:field="*{nom}" class="form-control" placeholder="Ex: Perceuse à percussion" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Catégorie</label>
+                <select class="form-select" th:field="*{categorie}" required>
+                    <option value="">-- Sélectionner une catégorie --</option>
+                    <option th:each="cat : ${categories}" 
+                            th:value="${cat.id}" 
+                            th:text="${cat.nom}">
+                    </option>
+                </select>
+                <div class="text-danger" th:if="${#fields.hasErrors('categorie')}" th:errors="*{categorie}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">État de l'outil</label>
+                <select class="form-select" th:field="*{etat}" required>
+                    <option value="NEUF">Neuf</option>
+                    <option value="BON_ETAT">Bon état</option>
+                    <option value="USE">Usagé</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Description</label>
+                <textarea th:field="*{description}" class="form-control" rows="4" placeholder="Précisez les accessoires inclus, puissance, etc..."></textarea>
+                <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-md-8">
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">🚀 Publier l'outil</button>
+                </div>
+                <div class="col-md-4">
+                    <a th:href="@{/utilisateurs/principal}" class="btn btn-outline-secondary w-100 py-2">Annuler</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifier Outil</title>
+</head>
+<body>
+    <h1>Modifier Outil</h1>
+    <form th:action="@{/outils/modifier}" th:object="${outil}" method="post">
+         <!-- Hidden field for the ID -->
+        <input type="hidden" th:field="*{id}" />
+        
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" th:field="*{nom}" required />
+        <br>
+        
+        <label for="description">Description :</label>
+        <textarea id="description" th:field="*{description}" required></textarea>
+        <br>
+        
+        <label for="etat">État :</label>
+        <select id="etat" th:field="*{etat}" required>
+            <option th:each="etat : ${T(com.example.outilsPlatform.enums.EtatOutil).values()}" 
+                    th:value="${etat}" 
+                    th:text="${etat}"></option>
+        </select>
+        <br>
+        
+        <label for="categorie">Catégorie :</label>
+        <select id="categorie" th:field="*{categorie.id}" required>
+            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.nom}"></option>
+        </select>
+        <br>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+</body>
+</html>

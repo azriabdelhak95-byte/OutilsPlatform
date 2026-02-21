@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Envoyer un Message</title>
+</head>
+<body>
+    <h1>Envoyer un Message</h1>
+    <form th:action="@{/messages/envoyer}" method="post">
+        <input type="hidden" name="destinataireId" th:value="${destinataire.id}" />
+        <input type="hidden" name="expediteurId" th:value="${utilisateur.id}" />
+        <label>Message :</label>
+        <textarea name="contenu" required></textarea>
+        <br>
+        <button type="submit">Envoyer</button>
+    </form>
+</body>
+</html>

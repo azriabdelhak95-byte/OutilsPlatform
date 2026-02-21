@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OutilsPlatform - Mes Outils</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 50px; }
+        .table-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .btn-action { margin-right: 5px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand" th:href="@{/utilisateurs/principal}">🛠️ OutilsPlatform</a>
+            <a th:href="@{/utilisateurs/principal}" class="btn btn-outline-light btn-sm">Accueil</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="table-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-secondary m-0">🛠️ Mes outils</h2>
+                <a th:href="@{/outils/ajouter}" class="btn btn-primary shadow-sm">+ Ajouter un outil</a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(outils)}" class="alert alert-warning text-center">
+                <p class="m-0">Aucun outil trouvé dans votre inventaire.</p>
+            </div>
+
+            <div class="table-responsive" th:if="${!#lists.isEmpty(outils)}">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>État</th>
+                            <th>Catégorie</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="outil : ${outils}">
+                            <td th:text="${outil.id}">1</td>
+                            <td class="fw-bold text-primary" th:text="${outil.nom}">Nom</td>
+                            <td th:text="${outil.description}">Description</td>
+                            <td>
+                                <span class="badge bg-info text-dark" th:text="${outil.etat}">Etat</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary" th:text="${outil.categorie?.nom}">Sans catégorie</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <a th:href="@{/outils/modifier/{id}(id=${outil.id})}" 
+                                       class="btn btn-sm btn-outline-secondary btn-action">✏️ Modifier</a>
+                                    
+                                    <form th:action="@{/outils/supprimer/{id}(id=${outil.id})}" 
+                                          method="post" 
+                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet outil ?');"
+                                          class="m-0">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

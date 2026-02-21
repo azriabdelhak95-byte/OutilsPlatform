@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OutilsPlatform - Louer un Outil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; }
+        .booking-card {
+            max-width: 550px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .tool-preview {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #0d6efd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="booking-card">
+            <h2 class="text-center fw-bold mb-4">Finaliser la location</h2>
+
+            <div class="tool-preview">
+                <small class="text-muted text-uppercase fw-bold">Outil sélectionné</small>
+                <h4 class="mb-0 text-primary" th:text="${outil.nom}">Nom de l'outil</h4>
+                <p class="text-muted mb-0 small" th:text="${outil.categorie?.nom}">Catégorie</p>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger shadow-sm" th:text="${error}"></div>
+            <div th:if="${success}" class="alert alert-success shadow-sm" th:text="${success}"></div>
+
+            <form th:action="@{/transactions/louer}" method="post">
+                <input type="hidden" name="outil_id" th:value="${outil.id}" />
+
+                <div class="mb-3">
+                    <label for="typeTransaction" class="form-label fw-bold">Type de contrat</label>
+                    <select id="typeTransaction" name="typeTransaction" class="form-select" required>
+                        <option th:each="type : ${typeTransactions}" 
+                                th:value="${type}" 
+                                th:text="${type}"></option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="dateDebut" class="form-label fw-bold">Date de début</label>
+                        <input type="date" id="dateDebut" name="dateDebut" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="dateFin" class="form-label fw-bold">Date de fin</label>
+                        <input type="date" id="dateFin" name="dateFin" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg shadow-sm">Confirmer la réservation</button>
+                    <a th:href="@{/transactions/rechercher-outils}" class="btn btn-outline-secondary">Annuler et revenir</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Petite sécurité : On ne peut pas choisir une date passée
+        document.getElementById('dateDebut').min = new Date().toISOString().split("T")[0];
+        document.getElementById('dateFin').min = new Date().toISOString().split("T")[0];
+    </script>
+</body>
+</html>
