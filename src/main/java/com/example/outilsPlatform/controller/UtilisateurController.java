@@ -30,10 +30,9 @@ public class UtilisateurController {
 
     @PostMapping("/inscription")
     public String inscription(@ModelAttribute @Valid Utilisateur utilisateur, BindingResult bindingResult, Model model) {
-         if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "inscription";
         }
-        
         if (utilisateurRepository.findByEmail(utilisateur.getEmail()).isPresent()) {
             model.addAttribute("erreur", "Cet email est déjà utilisé.");
             return "inscription";
@@ -43,42 +42,35 @@ public class UtilisateurController {
     }
 
     @GetMapping("/connexion")
-    public String afficherConnexion(Model model, HttpSession session) {
-
+    public String afficherConnexion(Model model) {
         model.addAttribute("utilisateur", new Utilisateur());
         return "connexion";
     }
-    
-    @PostMapping("/connexion")
-    public String connexion(@RequestParam String email,
-                                   @RequestParam String motDePasse, Model model,  HttpSession session) {
 
-        Utilisateur utilisateur = utilisateurRepository.findByEmailAndMotDePasse(email, motDePasse).orElse(null);
-        if (utilisateur == null) {
-            model.addAttribute("erreur", "Identifiants incorrects.");
-            return "connexion";
+    @PostMapping("/connexion")
+    public String connexion(@RequestParam String email, @RequestParam String motDePasse, HttpSession session, Model model) {
+        Utilisateur user = utilisateurRepository.findByEmailAndMotDePasse(email, motDePasse).orElse(null);
+        if (user != null) {
+            session.setAttribute("utilisateur", user);
+            return "redirect:/utilisateurs/principal";
         }
-        
-        // Save the authenticated user in the session
-        session.setAttribute("utilisateur", utilisateur);
-    
-        model.addAttribute("utilisateur", utilisateur);
-        return "principal";
+        model.addAttribute("erreur", "Identifiants incorrects.");
+        return "connexion";
     }
 
     @GetMapping("/principal")
-    public String principal(Model model) {
-        model.addAttribute("utilisateur", new Utilisateur());
+    public String principal(Model model, HttpSession session) {
+        Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
+        if (user == null) return "redirect:/utilisateurs/connexion";
+        model.addAttribute("utilisateur", user);
         return "principal";
     }
 
-    /*@GetMapping("/deconnexion")
+    @GetMapping("/deconnexion")
     public String deconnexion(HttpSession session) {
-        // Invalidate the session to log out the user
         if (session != null) {
             session.invalidate();
-            // Redirect to the accueil page
-        }   
+        }
         return "redirect:/utilisateurs/accueil";
-    }*/
+    }
 }

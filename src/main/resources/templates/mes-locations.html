@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Locations - OutilsPlatform</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body { background-color: #f4f7f6; }
+        .navbar { margin-bottom: 30px; }
+        .table-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/utilisateurs/principal}">🛠️ OutilsPlatform</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/outils/transactions}">Catalogue</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/outils/mes-outils}">Mes Outils</a></li>
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/outils/mes-locations}">Mes Locations</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger" th:href="@{/utilisateurs/connexion}">Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="table-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0">📋 Historique de mes locations</h2>
+                <a th:href="@{/outils/transactions}" class="btn btn-outline-primary btn-sm">Louer un autre outil</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Outil</th>
+                            <th>Propriétaire</th>
+                            <th>Date de début</th>
+                            <th>Type</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="trans : ${transactions}">
+                            <td>
+                                <div class="fw-bold text-dark" th:text="${trans.outil.nom}">Perceuse</div>
+                                <small class="text-muted" th:text="${trans.outil.categorie.nom}">Bricolage</small>
+                            </td>
+                            <td th:text="${trans.outil.proprietaire.nom}">Jean Dupont</td>
+                            <td th:text="${#temporals.format(trans.dateDebut, 'dd MMMM yyyy')}">21 Février 2026</td>
+                            <td>
+                                <span class="badge bg-light text-dark border" th:text="${trans.type}">LOCATION</span>
+                            </td>
+                            <td>
+                                <span class="status-badge bg-info text-dark fw-bold">En cours</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div th:if="${#lists.isEmpty(transactions)}" class="text-center py-5">
+                <div class="display-1 mb-3">📦</div>
+                <h4 class="text-muted">Vous n'avez loué aucun outil pour le moment.</h4>
+                <p>Allez dans le catalogue pour trouver votre bonheur !</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-4 mt-5 bg-dark text-white text-center">
+        <p class="mb-0">© 2026 OutilsPlatform - Le plaisir de partager.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

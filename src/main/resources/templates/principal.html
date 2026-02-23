@@ -1,43 +1,98 @@
-<div class="row g-4 justify-content-center">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OutilsPlatform - Tableau de Bord</title>
     
-    <div class="col-md-3">
-        <div class="card card-menu h-100 text-center p-3">
-            <div class="card-body">
-                <div class="display-6 mb-3">➕</div>
-                <h5 class="card-title">Ajouter</h5>
-                <a th:href="@{/outils/ajouter}" class="btn btn-primary w-100">C'est parti</a>
-            </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .hero-section { 
+            background: linear-gradient(135deg, #212529 0%, #343a40 100%); 
+            color: white; 
+            padding: 50px 0; 
+            border-radius: 0 0 40px 40px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .menu-card { 
+            border: none; 
+            border-radius: 20px; 
+            transition: all 0.3s ease; 
+            text-decoration: none; 
+            color: inherit; 
+            height: 100%;
+            display: block;
+        }
+        .menu-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1); 
+            background-color: #ffffff;
+        }
+        .icon-box { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-bottom: 20px; 
+            font-size: 28px; 
+        }
+        .bg-blue { background-color: #e7f1ff; color: #0d6efd; }
+        .bg-orange { background-color: #fef1e7; color: #fd7e14; }
+        .bg-green { background-color: #e7fcf0; color: #198754; }
+    </style>
+</head>
+<body>
+
+    <div class="hero-section text-center mb-5">
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-2">
+                Bonjour, <span th:text="${utilisateur != null ? utilisateur.nom : 'Invité'}">Utilisateur</span> !
+            </h1>
+            <p class="lead opacity-75">Bienvenue sur votre espace de gestion d'outils.</p>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card card-menu h-100 text-center p-3">
-            <div class="card-body">
-                <div class="display-6 mb-3">🔧</div>
-                <h5 class="card-title">Mon Matériel</h5>
-                <a th:href="@{/outils/mes-outils}" class="btn btn-outline-primary w-100">Gérer</a>
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            
+            <div class="col-md-4">
+                <a th:href="@{/outils/transactions}" class="card menu-card p-4 shadow-sm">
+                    <div class="icon-box bg-blue"><i class="bi bi-search"></i></div>
+                    <h4 class="fw-bold">Catalogue</h4>
+                    <p class="text-muted small">Consultez les outils disponibles et effectuez une réservation.</p>
+                </a>
             </div>
+
+            <div class="col-md-4">
+                <a th:href="@{/outils/mes-outils}" class="card menu-card p-4 shadow-sm">
+                    <div class="icon-box bg-orange"><i class="bi bi-tools"></i></div>
+                    <h4 class="fw-bold">Mes Outils</h4>
+                    <p class="text-muted small">Ajoutez de nouveaux outils ou gérez votre inventaire actuel.</p>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a th:href="@{/categories/ajouter}" class="card menu-card p-4 shadow-sm">
+                    <div class="icon-box bg-green"><i class="bi bi-tags"></i></div>
+                    <h4 class="fw-bold">Catégories</h4>
+                    <p class="text-muted small">Créez et gérez les catégories pour classer vos outils.</p>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+            <a th:href="@{/utilisateurs/deconnexion}" class="btn btn-danger btn-lg px-5 rounded-pill shadow-sm">
+                <i class="bi bi-power me-2"></i> Se déconnecter
+            </a>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card card-menu h-100 text-center p-3">
-            <div class="card-body">
-                <div class="display-6 mb-3">📁</div>
-                <h5 class="card-title">Catégories</h5>
-                <a th:href="@{/categories}" class="btn btn-outline-primary w-100">Organiser</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="card card-menu h-100 text-center p-3">
-            <div class="card-body">
-                <div class="display-6 mb-3">🤝</div>
-                <h5 class="card-title">Échanges</h5>
-                <a th:href="@{/outils/transactions}" class="btn btn-outline-primary w-100">Suivre</a>
-            </div>
-        </div>
-    </div>
-
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

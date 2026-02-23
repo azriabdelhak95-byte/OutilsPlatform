@@ -8,54 +8,52 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
-        body { background-color: #f4f7f6; }
-        .form-container {
-            max-width: 500px;
-            margin: 50px auto;
-        }
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            padding: 10px;
-            font-weight: bold;
-        }
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
+        .form-container { max-width: 500px; margin: 60px auto; }
+        .card { border: none; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .btn-primary { background: #0d6efd; border: none; padding: 12px; font-weight: 600; border-radius: 10px; }
+        .btn-primary:hover { background: #0b5ed7; }
+        .form-label { color: #495057; }
+        .navbar { background: #1a1a1a !important; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-dark mb-4 shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="/utilisateurs/principal">⬅️ Retour</a>
+            <a class="navbar-brand fw-bold" th:href="@{/categories}">⬅️ Retour à la liste</a>
         </div>
     </nav>
 
     <div class="container form-container">
         <div class="card p-4">
             <div class="card-body">
-                <h2 class="text-center mb-4 text-secondary">📁 Nouvelle Catégorie</h2>
-                <p class="text-center text-muted small">Créez une catégorie pour mieux organiser les outils partagés.</p>
-                <hr>
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-dark">📁 Nouvelle Catégorie</h2>
+                    <p class="text-muted">Organisez vos outils par thématique</p>
+                </div>
                 
-                <form th:action="@{/categories/ajouter}" method="post">
-                    <div class="mb-3">
-                        <label for="nom" class="form-label fw-bold">Nom de la catégorie</label>
-                        <input type="text" id="nom" name="nom" class="form-control" placeholder="Ex: Jardinage, Bricolage..." required />
-                    </div>
+                <hr class="mb-4">
+                
+                <form th:action="@{/categories/ajouter}" th:object="${categorie}" method="post">
                     
                     <div class="mb-3">
+                        <label for="nom" class="form-label fw-bold">Nom de la catégorie</label>
+                        <input type="text" id="nom" th:field="*{nom}" class="form-control form-control-lg" 
+                               placeholder="Ex: Jardinage, Électricité..." required />
+                    </div>
+                    
+                    <div class="mb-4">
                         <label for="description" class="form-label fw-bold">Description</label>
-                        <textarea id="description" name="description" class="form-control" rows="4" placeholder="Décrivez brièvement ce que contient cette catégorie..." required></textarea>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="4" 
+                                  placeholder="Décrivez brièvement l'utilité de cette catégorie..." required></textarea>
                     </div>
                     
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Enregistrer la catégorie</button>
-                        <a href="/utilisateurs/principal" class="btn btn-light">Annuler</a>
+                        <button type="submit" class="btn btn-primary shadow-sm">🚀 Enregistrer la catégorie</button>
+                        <a th:href="@{/categories}" class="btn btn-outline-secondary">Annuler</a>
                     </div>
+                    
                 </form>
             </div>
         </div>
